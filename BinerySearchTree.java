@@ -7,8 +7,9 @@ public class BinerySearchTree {
 		bt = new BineryTree<Integer>();
 	}
 	
-	public void add(int value){
+	public BineryTree<Integer> add(int value){
 		bt = RecurAdd(bt,value);
+		return bt;
 	}
 	
 	private BineryTree<Integer> RecurAdd(BineryTree<Integer> tree, int value){

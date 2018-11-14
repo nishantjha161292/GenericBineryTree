@@ -14,6 +14,7 @@ public class BineryTree<T> implements Iterable<BineryTree<T>>{
 	
 	BineryTree(T r){
 		root = new Node<T>(r);
+		root.height = 1;
 	}
 	
 	void setLeftTree(BineryTree<T> l){
@@ -32,9 +33,9 @@ public class BineryTree<T> implements Iterable<BineryTree<T>>{
 
 	@Override
 	public Iterator<BineryTree<T>> iterator() {
-		//return new PreOrderTreeTravel(this);
+		return new PreOrderTreeTravel(this);
 		//return new InOrderTreeTravel(this);
-		return new LevelOrderTreeTravel(this);
+		//return new LevelOrderTreeTravel(this);
 	}
 	
 	private class PreOrderTreeTravel implements Iterator<BineryTree<T>>{
