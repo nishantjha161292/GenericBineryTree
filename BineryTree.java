@@ -5,15 +5,15 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-public class BineryTree<T> implements Iterable<BineryTree<T>>{
-	Node<T> root;
+public class BineryTree<T> extends Node<BineryTree<T>,T> implements Iterable<BineryTree<T>> {
+	Node<BineryTree<T>,T> root;
 	
 	BineryTree(){
 		root = null;
 	}
 	
 	BineryTree(T r){
-		root = new Node<T>(r);
+		root = new Node<BineryTree<T>,T>(r);
 		root.height = 1;
 	}
 	
@@ -25,10 +25,16 @@ public class BineryTree<T> implements Iterable<BineryTree<T>>{
 		root.right = r;
 	}
 	BineryTree<T> left(){
-		return root.left;
+		return (BineryTree<T>) root.left;
 	}
 	BineryTree<T> right(){
-		return root.right;
+		return (BineryTree<T>) root.right;
+	}
+	void setValue(T r){
+		root.value = r;
+	}
+	T Value(){
+		return  root.value;
 	}
 
 	@Override

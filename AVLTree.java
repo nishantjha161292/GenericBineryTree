@@ -22,8 +22,8 @@ public class AVLTree extends BinerySearchTree{
 		BineryTree<Integer> tl = tree.left();
 		BineryTree<Integer> tr = tl.right();
 		
-		tl.root.right = tree;
-		tree.root.left = tr;
+		tl.setRightTree(tree);
+		tree.setLeftTree(tr);
 		
 		tl.root.height = 1+ Math.max(height(tl.left()), height(tl.right()));
 		tree.root.height = 1+ Math.max(height(tree.left()), height(tree.right()));
@@ -36,8 +36,8 @@ public class AVLTree extends BinerySearchTree{
 		BineryTree<Integer> tr = tree.right();
 		BineryTree<Integer> tl = tr.left();
 		
-		tr.root.left = tree;
-		tree.root.right = tl;
+		tr.setLeftTree(tree);
+		tree.setRightTree(tl);
 		
 		tr.root.height = 1+ Math.max(height(tr.left()), height(tr.right()));
 		tree.root.height = 1+ Math.max(height(tree.left()), height(tree.right()));
@@ -51,14 +51,14 @@ public class AVLTree extends BinerySearchTree{
 			return new BineryTree<Integer>(value);
 		}
 		if(tree.root.value > value)
-			tree.root.left = RecurAdd(tree.left(),value);
+			tree.setLeftTree(RecurAdd(tree.left(),value));
 		else if(tree.root.value < value)
-			tree.root.right = RecurAdd(tree.right(),value);
+			tree.setRightTree(RecurAdd(tree.right(),value));
 		else
 			return tree;
 		
-		tree.root.height = 1 + Math.max(height(tree.root.left),
-								height(tree.root.right));
+		tree.root.height = 1 + Math.max(height(tree.left()),
+								height(tree.right()));
 		int bal = getBalance(tree);
 		
 
@@ -73,14 +73,14 @@ public class AVLTree extends BinerySearchTree{
 	    // Left Right Case 
 	    if (bal > 1 && value > tree.left().root.value) 
 	    { 
-	        tree.root.left =  leftRotate(tree.left()); 
+	        tree.setLeftTree(leftRotate(tree.left())); 
 	        return rightRotate(tree); 
 	    } 
 	  
 	    // Right Left Case 
 	    if (bal < -1 && value < tree.right().root.value) 
 	    { 
-	        tree.root.right = rightRotate(tree.right()); 
+	        tree.setRightTree(rightRotate(tree.right())); 
 	        return leftRotate(tree); 
 	    }
 		
@@ -92,20 +92,20 @@ public class AVLTree extends BinerySearchTree{
 			return null;
 		}
 		if(tree.root.value > value)
-			tree.root.left = delete(tree.left(),value);
+			tree.setLeftTree(delete(tree.left(),value));
 		else if(tree.root.value < value)
-			tree.root.right = delete(tree.right(),value);
+			tree.setRightTree(delete(tree.right(),value));
 		else{
 			if(tree.left() == null)
 				return tree.right();
 			else if(tree.right() == null)
 				return tree.left();
 			tree.root.value = minRight(tree.right());
-			tree.root.right = delete(tree.right(), tree.root.value);
+			tree.setRightTree(delete(tree.right(), tree.root.value));
 		}
 
-		tree.root.height = 1 + Math.max(height(tree.root.left),
-								height(tree.root.right));
+		tree.root.height = 1 + Math.max(height(tree.left()),
+								height(tree.right()));
 		int bal = getBalance(tree);
 		
 
@@ -120,14 +120,14 @@ public class AVLTree extends BinerySearchTree{
 	    // Left Right Case 
 	    if (bal > 1 && value > tree.left().root.value) 
 	    { 
-	        tree.root.left =  leftRotate(tree.left()); 
+	        tree.setLeftTree(leftRotate(tree.left())); 
 	        return rightRotate(tree); 
 	    } 
 	  
 	    // Right Left Case 
 	    if (bal < -1 && value < tree.right().root.value) 
 	    { 
-	        tree.root.right = rightRotate(tree.right()); 
+	        tree.setRightTree(rightRotate(tree.right())); 
 	        return leftRotate(tree); 
 	    }
 		
@@ -144,8 +144,8 @@ public class AVLTree extends BinerySearchTree{
 	private int getBalance(BineryTree<Integer> tree){
 		if(tree== null || tree.root == null)
 			return 0;
-		//System.out.println(height(tree.root.left) - height(tree.root.right));
-		return height(tree.root.left) - height(tree.root.right);
+		//System.out.println(height(tree.left()) - height(tree.right()));
+		return height(tree.left()) - height(tree.right());
 	}
 	
 	
@@ -160,7 +160,7 @@ public class AVLTree extends BinerySearchTree{
 		tree.add(55);
 		tree.add(60);
 		tree.add(25);
-		tree.del(60);
+		//tree.del(60);
 		
 		for(BineryTree<Integer> bt: tree.bt){
 			System.out.println(bt.root.value);
