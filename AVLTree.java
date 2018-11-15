@@ -1,6 +1,6 @@
 package datastructure.trees;
 
-public class AVLTree{
+public class AVLTree extends BinerySearchTree{
 	BineryTree<Integer> bt;
 	
 	AVLTree(){
@@ -9,6 +9,11 @@ public class AVLTree{
 	
 	public BineryTree<Integer> add(int value){
 		bt = RecurAdd(bt,value);
+		return bt;
+	}
+	
+	public  BineryTree<Integer> del(int value){
+		bt = delete(bt,value);
 		return bt;
 	}
 	
@@ -82,6 +87,53 @@ public class AVLTree{
 		return tree;
 	}
 	
+	private BineryTree<Integer> delete(BineryTree<Integer> tree, int value){
+		if(tree == null || tree.root == null){
+			return null;
+		}
+		if(tree.root.value > value)
+			tree.root.left = delete(tree.left(),value);
+		else if(tree.root.value < value)
+			tree.root.right = delete(tree.right(),value);
+		else{
+			if(tree.left() == null)
+				return tree.right();
+			else if(tree.right() == null)
+				return tree.left();
+			tree.root.value = minRight(tree.right());
+			tree.root.right = delete(tree.right(), tree.root.value);
+		}
+
+		tree.root.height = 1 + Math.max(height(tree.root.left),
+								height(tree.root.right));
+		int bal = getBalance(tree);
+		
+
+	    // Left Left Case 
+	    if (bal > 1 && value < tree.left().root.value) 
+	        return rightRotate(tree); 
+	  
+	    // Right Right Case 
+	    if (bal < -1 && value > tree.right().root.value) 
+	        return leftRotate(tree); 
+	  
+	    // Left Right Case 
+	    if (bal > 1 && value > tree.left().root.value) 
+	    { 
+	        tree.root.left =  leftRotate(tree.left()); 
+	        return rightRotate(tree); 
+	    } 
+	  
+	    // Right Left Case 
+	    if (bal < -1 && value < tree.right().root.value) 
+	    { 
+	        tree.root.right = rightRotate(tree.right()); 
+	        return leftRotate(tree); 
+	    }
+		
+		return tree;
+	}
+	
 	
 	private int height(BineryTree<Integer> tree){
 		if(tree== null || tree.root == null)
@@ -92,7 +144,7 @@ public class AVLTree{
 	private int getBalance(BineryTree<Integer> tree){
 		if(tree== null || tree.root == null)
 			return 0;
-		System.out.println(height(tree.root.left) - height(tree.root.right));
+		//System.out.println(height(tree.root.left) - height(tree.root.right));
 		return height(tree.root.left) - height(tree.root.right);
 	}
 	
@@ -105,8 +157,10 @@ public class AVLTree{
 		tree.add(30);
 		tree.add(40);
 		tree.add(50);
+		tree.add(55);
+		tree.add(60);
 		tree.add(25);
-		
+		tree.del(60);
 		
 		for(BineryTree<Integer> bt: tree.bt){
 			System.out.println(bt.root.value);
