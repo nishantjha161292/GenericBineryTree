@@ -12,6 +12,10 @@ public class BinerySearchTree {
 		return bt;
 	}
 	
+	public BineryTree<Integer> del(int value){
+		bt = delete(bt,value);
+		return bt;
+	}
 	private BineryTree<Integer> RecurAdd(BineryTree<Integer> tree, int value){
 		
 		if(tree == null || tree.root == null){
@@ -26,6 +30,37 @@ public class BinerySearchTree {
 		
 		return tree;
 	}
+	
+	private BineryTree<Integer> delete(BineryTree<Integer> tree, int value){
+		
+		if(tree == null || tree.root == null){
+			return null;
+		}
+		if(tree.root.value > value)
+			tree.root.left = delete(tree.left(),value);
+		else if(tree.root.value < value)
+			tree.root.right = delete(tree.right(),value);
+		else{
+			if(tree.left() == null)
+				return tree.right();
+			else if(tree.right() == null)
+				return tree.left();
+			tree.root.value = minRight(tree.right());
+			tree.root.right = delete(tree.right(), tree.root.value);
+		}
+			
+		
+		return tree;
+	}
+	
+	protected int minRight(BineryTree<Integer> tree){
+		int minv = tree.root.value;
+		while(tree.left() != null){
+			minv = tree.left().root.value;
+			tree = tree.left();
+		}
+		return minv;
+	}
 
 	public static void main(String[] args) {
 		
@@ -38,6 +73,7 @@ public class BinerySearchTree {
 		bst.add(6);
 		bst.add(4);
 		bst.add(2);
+		//bst.del(9);
 		
 		for(BineryTree<Integer> bt: bst.bt){
 			System.out.println(bt.root.value);
